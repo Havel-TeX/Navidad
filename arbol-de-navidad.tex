@@ -1,0 +1,334 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{graphicx}
+%\usepackage[active,tightpage]{preview}
+\usepackage[margin=.5cm,nohead, paperwidth=20cm, paperheight=13cm]{geometry}
+%\PreviewEnvironment{tikzpicture}
+%\setlength\PreviewBorder{5pt}%
+%%%>
+\begin{comment}
+
+\end{comment}
+\usetikzlibrary{lindenmayersystems,decorations.pathmorphing,decorations.markings,shapes.geometric,calc}
+\usetikzlibrary{fadings, shapes, decorations.shapes, decorations.fractals, decorations.markings, shadows}
+\usetikzlibrary{decorations}
+\usepgflibrary{decorations.pathmorphing}
+\tikzset{
+  tinsel/.style={
+  	#1,rounded corners=10mm,ultra thin,decorate, decoration={
+  		snake,amplitude=.1mm,segment length=10,}},
+  baubles/.style={
+  	decorate,decoration={
+  		markings,mark=between positions .3 and 1 step 2cm with{
+  			\pgfmathsetmacro{\brad}{2 + .5 * rand}
+  			\path[shading=ball,ball color=#1] (0,0) circle[radius=\brad mm];
+      }
+    }
+  },
+  lights/.style={
+  	decorate,decoration={
+  		markings,mark=between positions 0 and 1 step 1cmwith{
+  			\pgfmathparse{rand > 0 ? "dart" : "kite"}
+  			\let\lshape\pgfmathresult
+  			\pgfmathsetmacro{\tint}{100*rnd}
+  			\node[rotate=90,\lshape,shading=ball,inner sep=1pt,ball color=red!\tint!yellow] {};
+      }
+    }
+  }
+}
+\tikzfading[name=fade out, inner color=transparent!10,outer color=transparent!10]
+\pgfdeclareradialshading{someshade}{\pgfpointorigin}{%
+	color(0mm)=(pgftransparent!40);color(5mm)=(pgftransparent!50);%
+	color(10mm)=(pgftransparent!70);color(2cm)=(pgftransparent!100)}
+\pgfdeclareradialshading{somenodeshade}{\pgfpointorigin}{%
+	color(0mm)=(pgftransparent!0);color(2mm)=(pgftransparent!5);%
+	color(5mm)=(pgftransparent!95);color(20mm)=(pgftransparent!100)}
+\pgfdeclareradialshading{invertshade}{\pgfpointorigin}{%
+	color(0mm)=(pgftransparent!100);color(6mm)=(pgftransparent!95);%
+	color(10mm)=(pgftransparent!60);color(2cm)=(pgftransparent!0)}
+\pgfdeclarefading{fadeit}{\pgfuseshading{someshade}}
+\pgfdeclarefading{fadein}{\pgfuseshading{invertshade}}
+\pagestyle{empty}
+
+\newcommand{\Textos}[5]{
+	node[minimum height=3em, minimum width=12em,text width=#1em]%, drop shadow, rounded corners]%
+	(#2)at(#3cm,#4cm){#5}}
+
+\begin{document}
+	\begin{tikzpicture}[projectile/.style={decorate,decoration={random steps,segment 
+	length=3pt,amplitude=0.5pt}}]
+		% fondo del amanecer
+		\clip (-9,-4) rectangle (9,8);
+		\fill[blue!10!black] (-9.1,5) rectangle (9.1,8);
+		\fill[yellow] (-9,-8) rectangle (9,5);
+		\fill[inner color=blue!40!,outer color=blue!10!black] (-12,-7) rectangle (9,5);
+
+		\draw[draw=none] 
+		[postaction={path fading=north,fill=orange!5!red,opacity=0.5}](-9.5,-3.5) rectangle (9.5,-2.5);%
+		\draw[draw=none] 
+		[postaction={path fading=north,fill=orange,opacity=1.9}](-9.5,-3.5) rectangle (9.5,-3);
+
+		\fill[black]
+		decorate [decoration={random steps,segment length=.05pt,amplitude=.8pt}] %
+		{(-9.5,-3.25) -- (-5.5,-3.25)}%
+		decorate [decoration={random steps,segment length=.05pt,amplitude=.8pt}] %
+		{-- (-0.5,-3.25) -- (-1,-3.25)}%
+		decorate [decoration={random steps,segment length=.05pt,amplitude=.8pt}] %
+		{-- (1,-3.25) -- (9.5,-3.25)}%
+		-- (9.5,-4) -- (-9.5,-4) -- (-9.5,-4);
+%		% estrallas
+		\draw[color=white] (6.7,5) circle (0.005);
+		\draw[color=white] (-7.4,6) circle (0.005);
+		\draw[color=white] (2,5) circle (0.0005);
+		\draw[color=white] (-7,6.5) circle (0.005);
+		\draw[color=white] (8,6) circle (0.0005);
+		\draw[color=red] (7,7.5) circle (0.005);
+		\draw[color=white] (5,7.2) circle (0.005);
+		\draw[color=white] (7,7.5) circle (0.005);
+		\draw[color=white] (-1,6.2) circle (0.005);
+		\draw[color=white] (0,7) circle (0.0005);
+		\draw[color=white] (-3.9,7.3) circle (0.005);
+		\draw[color=white] (-1.5,7.5) circle (0.0005);
+		\draw[color=white] (3.6,6.5) circle (0.005);
+		\draw[color=white] (3,7) circle (0.0005);
+		\draw[color=white] (3.2,7.3) circle (0.005);
+		\draw[color=white] (2.7,6.4) circle (0.0005);
+		\draw[color=white] (2.4,7.5) circle (0.005);
+		\draw[color=yellow] (-2.8,7.4) circle (0.005);
+		\draw[color=white] (3.7,7.8) circle (0.005);
+		\draw[color=white] (-3.4,5.2) circle (0.0005);
+		\draw[color=white] (-1,6.9) circle (0.0005);
+		\draw[color=white] (2.6,7.4) circle (0.005);
+		\draw[color=white] (-3.2,7.9) circle (0.0005);
+		\draw[color=white] (-1.9,6.9) circle (0.005);
+		\draw[color=white] (5.6,5) circle (0.0005);
+		\draw[color=white] (-7.4,6) circle (0.005);
+		\draw[color=blue] (2,5) circle (0.0005);
+		\draw[color=white] (-7.6,7.4) circle (0.005);
+		\draw[color=white] (-7.4,6) circle (0.0005);
+		\draw[color=white] (-7.7,7.5) circle (0.005);
+		\draw[color=white] (-5,7.2) circle (0.005);
+		\draw[color=white] (-6.4,7) circle (0.005);
+		\draw[color=white] (-1,6.2) circle (0.005);
+		\draw[color=white] (-5,7) circle (0.0005);
+		\draw[color=white] (-3.9,7.3) circle (0.005);
+		\draw[color=white] (-1.5,7.5) circle (0.005);
+		\draw[color=white] (-3.6,6.4) circle (0.005);
+		\draw[color=white] (-3,7) circle (0.005);
+		\draw[color=white] (-3.2,7.3) circle (0.005);
+		\draw[color=green] (-2.7,6) circle (0.0005);
+		\draw[color=white] (-2.4,7.5) circle (0.005);
+		\draw[color=white] (-2.8,7.4) circle (0.005);
+		\draw[color=white] (-3.7,7.5) circle (0.005);
+		\draw[color=white] (-3.4,5) circle (0.005);
+		\draw[color=white] (-1,6.4) circle (0.0005);
+		\draw[color=white] (2.6,7) circle (0.005);
+		\draw[color=white] (-3.2,7.3) circle (0.005);
+		\draw[color=white] (1.9,6.7) circle (0.005);
+%		fuegos artificiales
+		\begin{scope}[xshift=8cm,yshift=6.3cm]  
+		\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{8cm}{5.6cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-7.8cm,yshift=5.6cm]  
+		\foreach \x in {2,6,..., 360}{\def\r2{rand}\draw [red!25!green,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-7.41cm}{4.6cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=6.1cm,yshift=6.8cm]  
+		\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red!76!green,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{6.1cm}{6.8cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=7cm,yshift=4cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [red!45!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{7cm}{4cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=7cm,yshift=5.5cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [yellow!75!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{7cm}{5.5cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=1cm,yshift=5.6cm]  
+			\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red,line width=0.5pt,thick,projectile]
+				($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+				{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{1cm}{5.6cm}}}};
+			\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-6.1cm,yshift=7.3cm]  
+		\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red!66!green,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-6.1cm}{7.3cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-5.41cm,yshift=4.6cm]  
+		\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red!65!yellow,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-5.41cm}{4.6cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-3.1cm,yshift=2cm]  
+		\foreach \x in {2,8,..., 360}{\def\r2{rand}\draw [red!25!blue,line width=0.5pt,thick,projectile]
+			($(0,0)!abs{\r2}!(\x :15mm)$) to ($(0,0)!abs{\r2}+0.1!(\x :6mm)$);}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-3.1cm}{2cm}}}};
+		\fill[red!70!green,opacity=0.9] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-7cm,yshift=4cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [red!45!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{3cm}{4cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=3cm,yshift=6cm]
+			\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [yellow!45!blue]
+				($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+				{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{3cm}{6cm}}}};
+			\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=0cm,yshift=7cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [orange!45!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{0cm}{7cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-3cm,yshift=6.5cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [gray!45!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-3cm}{6.5cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-7cm,yshift=6cm]
+		\foreach \x in {8,16,..., 360}{\def\r1{rand}\draw [red!75!blue]
+			($(0,0)!abs{\r1}!(\x :15mm)$) to [in=90] ($(0,0)!abs{\r1}+0.2!(\x :8mm)$) ;}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-7cm}{6cm}}}};
+		\fill[yellow,opacity=0.6] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=2cm,yshift=5cm]
+			\foreach \x in {0,8,..., 360}{\draw [yellow!25!blue,thick,projectile] (0.7,0)
+				to  (7*rand+\x :1mm*rand+2.2cm)  node[circle,inner sep=.5mm,
+				shade,shading=somenodeshade,opacity=0.6] {};}
+			{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{2.5cm}{5cm}}}};
+		\fill[white] (-3,-3) rectangle (3,3);
+		\end{scope}
+%		amarillo esq der 
+
+		\begin{scope}[xshift=-6.7cm,yshift=5.6cm]
+		\foreach \x in {0,8,..., 360}{\draw [yellow!45!green,thick,projectile] (0.7,0)
+			to  (7*rand+\x :1mm*rand+2.2cm)  node[circle,inner sep=.5mm,
+			shade,shading=somenodeshade,opacity=0.6] {};}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-7cm}{5.6cm}}}};
+		\fill[yellow!45!green] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		
+		\begin{scope}[xshift=6.7cm,yshift=5.6cm]
+		\foreach \x in {0,8,..., 360}{\draw [yellow!65,thick,projectile] (0.7,0)
+			to  (7*rand+\x :1mm*rand+2.2cm)  node[circle,inner sep=.5mm,
+			shade,shading=somenodeshade,opacity=0.6] {};}
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{7cm}{5.6cm}}}};
+		\fill[yellow!65] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=-2cm,yshift=4cm,transparency group]
+			\foreach \x in {0,6,..., 360}{\draw[blue!60!red,projectile,line width=1.1pt]
+				(0,0) to [in=90] (10*rand+\x:rand*1mm+2cm)node[circle,inner sep=.5mm,
+				shade,shading=somenodeshade,opacity=0.6] {};};
+			{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{-2.5cm}{4cm}}}};
+			\fill[blue!60!red] (-3,-3) rectangle (3,3);
+		\end{scope}
+		
+		\begin{scope}[xshift=5.9cm,yshift=4cm,transparency group]
+		\foreach \x in {0,6,..., 360}{\draw[blue!40!green,projectile,line width=1.1pt]
+			(0,0) to [in=90] (10*rand+\x:rand*1mm+2cm)node[circle,inner sep=.5mm,
+			shade,shading=somenodeshade,opacity=0.6] {};};
+		{\pgfsetfading{fadeit}{\pgftransformshift{\pgfpoint{5.9cm}{4cm}}}};
+		\fill[blue!40!green] (-3,-3) rectangle (3,3);
+		\end{scope}
+%		Arbol de navidad
+		\coordinate (star) at (-3.2,4.5);
+		\path (star) +(-50:7) coordinate (rhs) +(-130:7) coordinate (lhs);
+		\draw[brown!50!black,line width=2mm,line cap=round] (star) ++(-90:7) -- ++(0,-.8) coordinate (base);
+		\node[scale=-1,trapezium,fill=gray,minimum size=.8cm] at (base) {};
+		\foreach \height/\colour in {%
+		  .2/blue,
+		  .4/yellow,
+		  .6/red,
+		  .8/orange,
+		  1/pink!35!purple%
+		} {
+		  \draw[tinsel=\colour] ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+		\path (star);
+		\pgfgetlastxy{\starx}{\stary}
+		\begin{scope}[xshift=\starx,yshift=\stary,yshift=-7cm]
+		\draw[color=green!40!black, l-system={rule set={S -> [+++G][---G]TS,  G -> +H[-G]L, H -> -G[+H]L, T 
+		-> TL, L 
+		-> [-FFF][+FFF]F}, step=4pt, angle=18, axiom=+++++SLFFF, order=11}] lindenmayer system -- cycle;
+		\end{scope}
+		\foreach \height/\colour in {%
+		  .1/pink!35!purple,
+		  .3/red,
+		  .5/yellow,
+		  .7/blue,
+		  .9/orange%
+		} {
+		  \draw[tinsel=\colour] ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+		\foreach \height in {.15,.20,...,1} {
+		  \draw[lights]  ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+		\foreach \angle/\colour in {
+		  -50/red,
+		  -70/yellow,
+		  -90/blue,
+		  -110/pink!35!purple,
+		  -130/purple%
+		} {
+		  \draw[baubles=\colour] (star) -- ++(\angle:7);
+		}
+		\node[star,star point ratio=3,fill=yellow,minimum size=1cm] at (star) {};
+%		la nieve
+		\foreach \i in {0.2,0.4,...,33.6}
+		\fill [white!80!blue,decoration=Koch snowflake,opacity=.5]
+		[shift={(rand*-9,rnd*9)},scale=.08] %shift={(rand*5,rnd*8)}
+		[double copy shadow={opacity=0.2,shadow xshift=0pt,
+			shadow yshift=3*\i pt,fill=white,draw=none}]
+		decorate {
+			decorate {
+				decorate {
+					(0,0) -- ++(60:1) -- ++(-60:1) -- cycle
+				}
+			}
+		};
+%		Texto
+		\path \Textos{100}{L}{8.9}{-2}{\resizebox{6cm}{!}{\includegraphics{imagenes/regalo.png}}};
+		\path \Textos{100}{L}{20}{2}{\textcolor{white}{\textsc{{\Huge Feliz}}}};
+		\path \Textos{100}{L}{19.5}{1.2}{\textcolor{white}{\textsc{{\Huge Navidad}}}};
+		\path \Textos{100}{L}{20.9}{.5}{\textcolor{white}{\textsc{{\Huge y}}}};
+		\path \Textos{100}{L}{19}{-.2}{\textcolor{white}{\textsc{{\Huge Pr\'ospero}}}};
+		\path \Textos{100}{L}{17.5}{-1}{\textcolor{white}{\textsc{{\Huge A\~no Nuevo 2015}}}};
+		\path \Textos{100}{L}{22}{-3.6}{\textcolor{white}{\textsc{{\LARGE By: Havel C.}}}};
+	\end{tikzpicture}
+\end{document}
